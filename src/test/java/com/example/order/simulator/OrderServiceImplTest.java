@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -122,26 +120,10 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when cancelling pending order")
+    @DisplayName("Should cancel order successfully when status is PENDING")
     void testCancelOrder_WhenOrderIsPending() {
         // Given
-        testOrder.setStatus(OrderStatus.EXECUTED);
-        when(orderRepositoryPort.findById(1L)).thenReturn(Optional.of(testOrder));
-
-        // When/Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            orderService.cancelOrder(1L);
-        });
-
-        assertEquals(OrderEnum.ORDER_ALREADY_CANCELLED, exception.getResponseEnum());
-        verify(orderRepositoryPort, never()).save(any(Order.class));
-    }
-
-    @Test
-    @DisplayName("Should cancel order successfully when status is EXECUTED")
-    void testCancelOrder_WhenOrderIsExecuted() {
-        // Given
-        testOrder.setStatus(OrderStatus.EXECUTED);
+        testOrder.setStatus(OrderStatus.PENDING);
         when(orderRepositoryPort.findById(1L)).thenReturn(Optional.of(testOrder));
         when(orderRepositoryPort.save(any(Order.class))).thenReturn(testOrder);
 
@@ -154,6 +136,22 @@ public class OrderServiceImplTest {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(orderRepositoryPort).save(orderCaptor.capture());
         assertEquals(OrderStatus.CANCELLED, orderCaptor.getValue().getStatus());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when cancelling CANCELLED order")
+    void testCancelOrder_WhenOrderIsExecuted() {
+        // Given
+        testOrder.setStatus(OrderStatus.CANCELLED);
+        when(orderRepositoryPort.findById(1L)).thenReturn(Optional.of(testOrder));
+
+        // When/Then
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            orderService.cancelOrder(1L);
+        });
+
+        assertEquals(OrderEnum.ORDER_ALREADY_CANCELLED, exception.getResponseEnum());
+        verify(orderRepositoryPort, never()).save(any(Order.class));
     }
 
     @Test
