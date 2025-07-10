@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order cancelOrder(Long id) {
         Order order = getOrderById(id);
-        if (OrderStatus.PENDING.equals(order.getStatus())) {
+        if (!OrderStatus.PENDING.equals(order.getStatus())) {
             throw new BusinessException(OrderEnum.ORDER_ALREADY_CANCELLED, id.toString(), order.getStatus().name());
         }
         order.setStatus(OrderStatus.CANCELLED);

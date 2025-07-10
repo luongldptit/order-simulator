@@ -125,7 +125,7 @@ public class OrderServiceImplTest {
     @DisplayName("Should throw exception when cancelling pending order")
     void testCancelOrder_WhenOrderIsPending() {
         // Given
-        testOrder.setStatus(OrderStatus.PENDING);
+        testOrder.setStatus(OrderStatus.EXECUTED);
         when(orderRepositoryPort.findById(1L)).thenReturn(Optional.of(testOrder));
 
         // When/Then

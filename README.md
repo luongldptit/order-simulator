@@ -40,6 +40,15 @@
 ## Running the unit tests
 Run `mvn test` to execute all unit tests. The service uses JUnit 5 and Mockito for testing.
 
+## Authentication
+The service uses Basic Authentication. In memory users are configured with the following credentials:
+1. Role ADMIN 
+   - Username: `admin`
+   - Password: `123456`
+2. Role EMPLOYEE 
+   - Username: `employee`
+   - Password: `123456`
+
 ## Curl Api Examples
 ### Create Order
 ```bash

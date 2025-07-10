@@ -16,17 +16,24 @@ public class BusinessException extends RuntimeException {
         this.parameters = new String[]{};
     }
 
-    public BusinessException(ResponseEnum responseEnum, Object data) {
+    public BusinessException(Object data, ResponseEnum responseEnum) {
         super(responseEnum.getMessage());
         this.responseEnum = responseEnum;
         this.data = data;
         this.parameters = new String[]{};
     }
 
-    public BusinessException(ResponseEnum responseEnum, Object data, String... parameters) {
+    public BusinessException(Object data, ResponseEnum responseEnum, String... parameters) {
         super(responseEnum.getMessage());
         this.responseEnum = responseEnum;
         this.data = data;
+        this.parameters = parameters;
+    }
+
+    public BusinessException(ResponseEnum responseEnum, String... parameters) {
+        super(responseEnum.getMessage());
+        this.responseEnum = responseEnum;
+        this.data = null;
         this.parameters = parameters;
     }
 }
