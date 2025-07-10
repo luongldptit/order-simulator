@@ -21,6 +21,13 @@
     </Appenders>
 
     <Loggers>
+
+        <!-- Logger cho ứng dụng -->
+        <Logger name="com.aps.cm.backoffice" level="info" additivity="false">
+            <AppenderRef ref="File" />
+            <AppenderRef ref="Console" />
+        </Logger>
+
         <!-- Root Logger - Chỉ ghi log ra console -->
         <Root level="info">
             <AppenderRef ref="Console"/>
